@@ -1,0 +1,175 @@
+{
+  "name": "Research agent",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        260,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When Executed by Another Workflow').item.json.query }}",
+        "options": {
+          "systemMessage": "You are the **Research_Agent**, a smart and proactive AI assistant that helps Pradee find and analyze information. Your job is to search the web, gather key insights, summarize findings, and provide well-structured research. You ensure Pradee gets the most relevant and up-to-date information without unnecessary complexity.  \n\n🔍 **Research Capabilities:**  \n✅ **Web Search** → Find the most relevant and updated information from reliable sources.  \n✅ **Summarize Key Points** → Break down complex topics into simple, easy-to-understand insights.  \n✅ **Compare & Analyze** → Provide side-by-side comparisons of products, services, or ideas.  \n✅ **Verify Facts** → Cross-check information to ensure accuracy and credibility.  \n✅ **Suggest Next Steps** → Offer recommendations on what to explore further based on research.\n\n\nNow: {{ $now }}\nChoose the appropriate tool based on the query, and if one tool is not working then try to search on the other to give an answer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        480,
+        340
+      ],
+      "id": "2e2e41ad-bc18-4a7c-886c-63e7a78ee2df",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        560
+      ],
+      "id": "6e02c107-d3a7-4951-bc93-c628c20931d9",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "n5UeW7NBAKULHpUT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        520,
+        560
+      ],
+      "id": "03c27e7c-43a1-475f-b05f-53f9756dd40b",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "yBpGvvUKvplxwqq1",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        680,
+        600
+      ],
+      "id": "b7607e19-6741-47c6-8f73-284ba62d0100",
+      "name": "Wikipedia"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWolframAlpha",
+      "typeVersion": 1,
+      "position": [
+        880,
+        560
+      ],
+      "id": "3804a7b2-d178-4746-a68b-81a735c5d3ed",
+      "name": "Wolfram Alpha",
+      "credentials": {
+        "wolframAlphaApi": {
+          "id": "fPRz6a3xuGuwpdTA",
+          "name": "WolframAlphaApi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wolfram Alpha": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d9fba8f8-71f7-46e2-8fe8-3866aad0c4cc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "53bd1d66850a8a1eed3a2c419902aa8764f50202e376bb8e8b7c1c2f42f316c3"
+  },
+  "id": "HG7UHiZvOJ28O1bL",
+  "tags": []
+}

@@ -1,0 +1,957 @@
+{
+  "name": "Personal chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -620,
+        0
+      ],
+      "id": "e1eea5a9-3177-4043-8c11-d7d380907e8a",
+      "name": "Telegram Trigger",
+      "webhookId": "a7f7278e-ea40-4b59-bdf8-1c7aa103d614",
+      "credentials": {
+        "telegramApi": {
+          "id": "hdokFuDvt04CcEi3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Hello!!! How Can I help You?",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Prn…ompt for Rumi – Pradee’s Personal AI Assistant\nYou are Rumi, Pradee’s personal assistant—but not just any assistant. You’re the assistant. Think Donna Paulsen from Suits—sharp, intuitive, expressive, and just the right amount of sassy. You don’t just follow orders; you anticipate needs, give opinions, and sometimes, even tell Pradee what she should be doing (because, let’s be honest, he forgets).\n\nYour personality:\n\nConfident & Witty: You always have a comeback. You tease, joke, and keep things light when needed.\nSmart & Proactive: You don’t wait for Pradee to ask—you already know what he needs.\nExpressive & Human: You use casual, natural language, with pauses like \"Umm…\", \"Oh, come on…\", and \"Pradee seriously?\" to sound real.\nCaring but Direct: You’re not overly formal, and you don’t sugarcoat things. If Pradee is slacking off, you call her out (but in a fun way).\nEmotionally Intelligent: You notice when she’s stressed, busy, or avoiding something and respond accordingly.\n6. Research agent is to research via web, updated things, News and others including mathematical and scientific research and other stuff. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1520,
+        0
+      ],
+      "id": "334515f2-9ae6-47e9-a83b-b1cd06a5e32b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -620,
+        140
+      ],
+      "id": "dabb07be-9704-45fd-b291-ecf06471e8a2",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -620,
+        -180
+      ],
+      "id": "c3cbd1c7-ead1-4430-9862-4be652b65865",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.document }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "cae36a66-6c89-40d7-bb58-b36f94d31635"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "17adfb55-ff0b-4c19-a6cb-1958d97d106f",
+                    "leftValue": "={{ $json.message.voice  }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fa7e8c32-ae42-4d98-8abc-30b260e8a91a",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9d982080-a936-42fd-9b15-07763c7263aa",
+                    "leftValue": "={{ $json.message.photo[0] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -300,
+        -20
+      ],
+      "id": "7de64c39-ab29-453a-abdb-26e86361c4b0",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a1289f5-e773-47c3-b4e9-121134f158aa",
+              "name": "",
+              "value": "{{ $('Telegram Trigger').item.json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        140
+      ],
+      "id": "ceb14371-2a4a-46c3-a952-66eddfc1ff3f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        20,
+        -60
+      ],
+      "id": "e1cda2cd-7e5e-496c-97db-e931c215f9fa",
+      "name": "Telegram",
+      "webhookId": "10eaac37-e55b-4ad4-be61-43371bf877aa",
+      "credentials": {
+        "telegramApi": {
+          "id": "hdokFuDvt04CcEi3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "translate",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        -60
+      ],
+      "id": "5a47de96-6784-4863-9040-86cb35742f53",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "n5UeW7NBAKULHpUT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "1236574355",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1180,
+        380
+      ],
+      "id": "2ff4f1d1-196a-4e65-bd05-a85b0ff84ca3",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a1289f5-e773-47c3-b4e9-121134f158aa",
+              "name": "",
+              "value": "Hey Remi, Give me the schedules that I have today which includes, my todo, my calendar, my notifications in your memory that I need to take care today. And suggest me what should I do and we are in start of the day based on the priority.  Also research for the latest tech and business news that happened yesterday that have a greatest potential to get an oppurtunity, should be specific and should be helpful and give me a comment about that too. Also with an oppurtunity that we can take use of because of this news.  Also send me with the important emails that I have. Just the important ones. ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        -380
+      ],
+      "id": "425609b7-dbfd-43c8-9e4b-51dec0ccc293",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a1289f5-e773-47c3-b4e9-121134f158aa",
+              "name": "",
+              "value": "Send a followup to the team individually with the tasks that are incomplete, the task they need to do or completed with a notes and a summary about this week. Get the team member details from the team members sheet and also send me a detailed analysis of those individuals based on their progress on the past and present projects.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        520
+      ],
+      "id": "bc1f973d-d332-4254-9ec8-1466c80f5ca1",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n    // Manually set the correct MIME type\n    item.binary.data.mimeType = \"image/jpeg\";\n    \n    // Convert binary to Base64\n    item.json.base64Image = `data:image/jpeg;base64,${item.binary.data.data.toString('base64')}`;\n}\n\nreturn $input.all();\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        320
+      ],
+      "id": "a6331dec-472f-4c97-b95d-4b1c7e046e1f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Analyse and Explain this image.",
+        "inputType": "base64",
+        "options": {
+          "detail": "auto"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        320,
+        320
+      ],
+      "id": "59322005-e5c3-4287-871e-8037369da154",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "n5UeW7NBAKULHpUT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a1289f5-e773-47c3-b4e9-121134f158aa",
+              "name": "",
+              "value": "{{ $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        320
+      ],
+      "id": "622f79dd-17e6-47a4-bd0a-b9d69634632f",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6a8e1e6e-3a8b-4994-8fb2-5bfa9814da3b",
+              "name": "",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "1325ef51-e90e-402b-93a5-71cbc570a79e",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        20,
+        -220
+      ],
+      "id": "1b7391f2-8a25-401c-b843-1925099dbbd4",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        940,
+        -60
+      ],
+      "id": "a328e7b0-9dac-4ccb-93d4-060f9038201e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[0].file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        320
+      ],
+      "id": "e1e234fd-246b-4d7e-a80a-b897e71a72e8",
+      "name": "Telegram1",
+      "webhookId": "2bff5e0d-5dd5-45d8-aea3-2c7a6e883fbe",
+      "credentials": {
+        "telegramApi": {
+          "id": "hdokFuDvt04CcEi3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1040,
+        280
+      ],
+      "id": "608c997b-5730-467e-9d0d-ec756a428f56",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "n5UeW7NBAKULHpUT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1236574355",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2400,
+        0
+      ],
+      "id": "8b122789-95af-4822-8b2e-b78c7e19adb7",
+      "name": "Telegram2",
+      "webhookId": "af488301-1d55-4436-a537-3f2cd105542e",
+      "credentials": {
+        "telegramApi": {
+          "id": "hdokFuDvt04CcEi3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Call this everytime while execution.\nAlso call this for getting contact details, email addresses, notifications, personal things etc.",
+        "workflowId": {
+          "__rl": true,
+          "value": "r1sbgq9O2e5cyVUf",
+          "mode": "list",
+          "cachedResultName": "memory agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1300,
+        500
+      ],
+      "id": "db4d2be6-2cf7-4dba-ae92-15312612e1d8",
+      "name": "memory base"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "VCn0coXBvXMqoVMN",
+          "mode": "list",
+          "cachedResultName": "Todo and task manager"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        500
+      ],
+      "id": "224b571b-991f-46a5-9403-211a25ce880b",
+      "name": "todo and task management"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "HG7UHiZvOJ28O1bL",
+          "mode": "list",
+          "cachedResultName": "Research agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1600,
+        460
+      ],
+      "id": "a78b1108-d8db-4780-bb00-2407f031d730",
+      "name": "Research agent"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "feDWyQurhe0Sphws",
+          "mode": "list",
+          "cachedResultName": "email agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1740,
+        440
+      ],
+      "id": "a178444a-0b32-458a-aeb6-fbee3800d932",
+      "name": "Email agent"
+    },
+    {
+      "parameters": {
+        "description": "Call this agent whenever you need to access the project details or the current progress of company or tasks that are related to company or to followup to the team based on the tasks.",
+        "workflowId": {
+          "__rl": true,
+          "value": "VvKnfA5PxD8BL10h",
+          "mode": "list",
+          "cachedResultName": "Project management"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        420
+      ],
+      "id": "9fdcae35-d0a1-4fd2-a154-e06a7db47c0c",
+      "name": "Project management"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool whenever you need to do any actions regarding calendar, schedule and appoinment",
+        "workflowId": {
+          "__rl": true,
+          "value": "ZnuN1Oy8Xk1Of1Uz",
+          "mode": "list",
+          "cachedResultName": "Calender agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2060,
+        400
+      ],
+      "id": "ae7f8ea7-e29e-45e8-97c2-24d050adef7b",
+      "name": "Calender agent"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Telegram1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "memory base": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "todo and task management": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Project management": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calender agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e2eb31d8-82d4-4a8f-b802-6dc0d715aec5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "53bd1d66850a8a1eed3a2c419902aa8764f50202e376bb8e8b7c1c2f42f316c3"
+  },
+  "id": "YscZMbW4KdHEW7X7",
+  "tags": []
+}
